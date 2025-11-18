@@ -24,9 +24,10 @@ class InventorySystem:
         self.sheet = sheet
     
     def choose_inventory(self):
-        print(Fore.BLUE + Style.BRIGHT + "Which inventory would you like to access?")
+        print(Fore.BLUE + Style.BRIGHT + "\nWhich inventory would you like to access?\n")
         print(Fore.YELLOW + "[1] Library")
         print(Fore.YELLOW + "[2] Supplies")
+        print()
 
         while True:
             choice = input(Fore.GREEN + "Enter 1 or 2: ").strip()
@@ -36,10 +37,10 @@ class InventorySystem:
                 return "Supplies"
             
             else:
-                print(Fore.RED + Style.BRIGHT + "Your choice is invalid. Please choose 1 or 2.") 
+                print(Fore.RED + Style.BRIGHT + "\nYour choice is invalid. Please choose 1 or 2.\n") 
 
 if __name__ == "__main__":
     inventory_system = InventorySystem(SHEET)
     selected_inventory = inventory_system.choose_inventory()
-    print(Fore.MAGENTA + f"You selected: {selected_inventory}")
+    print(Fore.MAGENTA + f"\nYou selected: {selected_inventory}")
     
