@@ -58,7 +58,7 @@ class InventorySystem:
         while True:
             choice = input(Fore.GREEN + "Enter a number of your choice [1-5]: ").strip()
             if choice == "1":
-                print(Fore.MAGENTA + "\nAdd book selected\n")
+                self.add_book()
             elif choice == "2":
                 print(Fore.MAGENTA + "\nUpdate existing book selected\n")
             elif choice == "3":
@@ -70,6 +70,20 @@ class InventorySystem:
                 break
             else:
                 print(Fore.RED + Style.BRIGHT + "\nInvalid choice. Please choose options [1] to [5]\n")
+
+    def add_book(self):
+        worksheet_library = self.sheet.worksheet("Library")
+        print(Fore.CYAN + "\n=== Add a new book ===\n")
+        book_id = input(Fore.GREEN + "Enter book ID: ").strip()
+        title = input(Fore.GREEN + "Enter title: ").strip()
+        author = input(Fore.GREEN + "Enter author: ").strip()
+        quantity = input(Fore.GREEN + "Enter quantity: ").strip()
+        category = input(Fore.GREEN + "Enter category: ").strip()
+        notes = input(Fore.GREEN + "Enter notes: ").strip()
+
+        worksheet_library.append_row([book_id, title, author, quantity, category, notes])
+        print(Fore.MAGENTA + "\nBook added successfully.\n")
+
 
 
     def option_two_supplies(self):
