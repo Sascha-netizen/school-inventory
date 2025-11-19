@@ -77,10 +77,23 @@ class InventorySystem:
         book_id = input(Fore.GREEN + "Enter book ID: ").strip()
         title = input(Fore.GREEN + "Enter title: ").strip()
         author = input(Fore.GREEN + "Enter author: ").strip()
-        quantity = int(input(Fore.GREEN + "Enter quantity: ").strip())
+
+        # Error handling for book quantity input.
+        while True:
+            quantity_input = input(Fore.GREEN + "Enter Quantity: ").strip()
+            try:
+                quantity = int(quantity_input)
+                if quantity < 0:
+                    print(Fore.RED + "Quantity cannot be negative. Try again.")
+                    continue
+                break
+            except ValueError:
+                print(Fore.RED + "Invalid input. Please enter a numeric value for quantity.")
+
         category = input(Fore.GREEN + "Enter category: ").strip()
         notes = input(Fore.GREEN + "Enter notes: ").strip()
 
+        # Append new row to library worksheet.
         worksheet_library.append_row([book_id, title, author, quantity, category, notes])
         print(Fore.MAGENTA + "\nBook added successfully.\n")
 
@@ -120,10 +133,23 @@ class InventorySystem:
         product_id = input(Fore.GREEN + "Enter product ID: ").strip()
         product = input(Fore.GREEN + "Enter product: ").strip()
         brand = input(Fore.GREEN + "Enter brand: ").strip()
-        quantity = int(input(Fore.GREEN + "Enter quantity: ").strip())
+
+        # Error handling for supplies quantity input.
+        while True:
+            quantity_input = input(Fore.GREEN + "Enter Quantity: ").strip()
+            try:
+                quantity = int(quantity_input)
+                if quantity < 0:
+                    print(Fore.RED + "Quantity cannot be negative. Try again.")
+                    continue
+                break
+            except ValueError:
+                print(Fore.RED + "Invalid input. Please enter a numeric value for quantity.")
+
         category = input(Fore.GREEN + "Enter category: ").strip()
         notes = input(Fore.GREEN + "Enter notes: ").strip()
 
+        # Add new row to supplies worksheet.
         worksheet_supplies.append_row([product_id, product, brand, quantity, category, notes])
         print(Fore.MAGENTA + "\nItem added successfully.\n")
 
