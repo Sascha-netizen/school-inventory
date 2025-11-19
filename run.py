@@ -76,28 +76,28 @@ class InventorySystem:
         """
         Option two allows users to access and manage the records of the supplies department.
         """
-        print("\nYou are now managing the Supplies\n")
-        print("[1] Add item")
-        print("[2] Update existing item")
-        print("[3] Display item")
-        print("[4] Delete item")
-        print("[5] Exit / End of session")
+        print(Fore.BLUE + Style.BRIGHT + "\n====You are now managing the Supplies====\n")
+        print(Fore.YELLOW + "[1] Add item")
+        print(Fore.YELLOW + "[2] Update existing item")
+        print(Fore.YELLOW + "[3] Display item")
+        print(Fore.YELLOW + "[4] Delete item")
+        print(Fore.YELLOW + "[5] Exit / End of session")
 
         while True:
-            choice = input("Select an option [1-5]: ").strip()
+            choice = input(Fore.GREEN + "Enter a number of your choice [1-5]: ").strip()
             if choice == "1":
-                print("Add item selected")
+                print(Fore.MAGENTA + "\nAdd item selected\n")
             elif choice == "2":
-                print("Update item selected")
+                print(Fore.MAGENTA + "\nUpdate item selected\n")
             elif choice == "3":
-                print("Display existing item selected")
+                print(Fore.MAGENTA + "\nDisplay existing item selected\n")
             elif choice == "4":
-                print("Delete existing item selected")
+                print(Fore.MAGENTA + "\nDelete existing item selected\n")
             elif choice == "5":
-                print("End of session selected")
+                print(Fore.MAGENTA + "\nEnd of session selected\n")
                 break
             else:
-                print("Invalid choice. Please choose options [1] to [5]")
+                print(Fore.RED + Style.BRIGHT + "\nInvalid choice. Please choose options [1] to [5]\n")
 
         
 
