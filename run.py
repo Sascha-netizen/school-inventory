@@ -77,7 +77,7 @@ class InventorySystem:
         book_id = input(Fore.GREEN + "Enter book ID: ").strip()
         title = input(Fore.GREEN + "Enter title: ").strip()
         author = input(Fore.GREEN + "Enter author: ").strip()
-        quantity = input(Fore.GREEN + "Enter quantity: ").strip()
+        quantity = int(input(Fore.GREEN + "Enter quantity: ").strip())
         category = input(Fore.GREEN + "Enter category: ").strip()
         notes = input(Fore.GREEN + "Enter notes: ").strip()
 
@@ -100,7 +100,7 @@ class InventorySystem:
         while True:
             choice = input(Fore.GREEN + "Enter a number of your choice [1-5]: ").strip()
             if choice == "1":
-                print(Fore.MAGENTA + "\nAdd item selected\n")
+                self.add_item()
             elif choice == "2":
                 print(Fore.MAGENTA + "\nUpdate item selected\n")
             elif choice == "3":
@@ -113,7 +113,20 @@ class InventorySystem:
             else:
                 print(Fore.RED + Style.BRIGHT + "\nInvalid choice. Please choose options [1] to [5]\n")
 
-        
+
+    def add_item(self):
+        worksheet_supplies = self.sheet.worksheet("Supplies")
+        print(Fore.CYAN + "\n=== Add a new supplies item ===\n")
+        product_id = input(Fore.GREEN + "Enter product ID: ").strip()
+        product = input(Fore.GREEN + "Enter product: ").strip()
+        brand = input(Fore.GREEN + "Enter brand: ").strip()
+        quantity = int(input(Fore.GREEN + "Enter quantity: ").strip())
+        category = input(Fore.GREEN + "Enter category: ").strip()
+        notes = input(Fore.GREEN + "Enter notes: ").strip()
+
+        worksheet_supplies.append_row([product_id, product, brand, quantity, category, notes])
+        print(Fore.MAGENTA + "\nItem added successfully.\n")
+
 
 if __name__ == "__main__":
     inventory_system = InventorySystem(SHEET)
