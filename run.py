@@ -29,13 +29,13 @@ class InventorySystem:
         """
         Displays main inventory options and allows user to choose between either library or supplies.
         """
-        print(Fore.BLUE + Style.BRIGHT + "\nWhich inventory would you like to access?\n")
+        print(Fore.BLUE + Style.BRIGHT + "\n====Which school inventory would you like to access?====\n")
         print(Fore.YELLOW + "[1] Library")
         print(Fore.YELLOW + "[2] Supplies")
         print()
 
         while True:
-            choice = input(Fore.GREEN + "Enter 1 or 2: ").strip()
+            choice = input(Fore.GREEN + "\nEnter 1 or 2: ").strip()
             if choice == "1":
                 return "Library"
             elif choice == "2":
@@ -48,35 +48,35 @@ class InventorySystem:
         """
         Option one allows users to access and manage the library records.
         """
-        print(f"\nYou are now managing the Library\n")
-        print("[1] Add book")
-        print("[2] Update existing book")
-        print("[3] Display book")
-        print("[4] Delete book")
-        print("[5] Exit / End of session")
+        print(Fore.BLUE + Style.BRIGHT + "\n====You are now managing the Library====\n")
+        print(Fore.YELLOW + "[1] Add book")
+        print(Fore.YELLOW + "[2] Update existing book")
+        print(Fore.YELLOW + "[3] Display book")
+        print(Fore.YELLOW + "[4] Delete book")
+        print(Fore.YELLOW + "[5] Exit / End of session")
 
         while True:
-            choice = input("Select an option [1-5]: ").strip()
+            choice = input(Fore.GREEN + "Enter a number of your choice [1-5]: ").strip()
             if choice == "1":
-                print("Add book selected")
+                print(Fore.MAGENTA + "\nAdd book selected\n")
             elif choice == "2":
-                print("Update existing book selected")
+                print(Fore.MAGENTA + "\nUpdate existing book selected\n")
             elif choice == "3":
-                print("Display existing book selected")
+                print(Fore.MAGENTA + "\nDisplay existing book selected\n")
             elif choice == "4":
-                print("Delete existing book selected")
+                print(Fore.MAGENTA + "\nDelete existing book selected\n")
             elif choice == "5":
-                print("End of session selected")
+                print(Fore.MAGENTA + "\nEnd of session. Returning to main menu\n")
                 break
             else:
-                print("Invalid choice. Please choose options [1] to [5]")
+                print(Fore.RED + Style.BRIGHT + "\nInvalid choice. Please choose options [1] to [5]\n")
 
 
     def option_two_supplies(self):
         """
         Option two allows users to access and manage the records of the supplies department.
         """
-        print(f"\nYou are now managing the Supplies\n")
+        print("\nYou are now managing the Supplies\n")
         print("[1] Add item")
         print("[2] Update existing item")
         print("[3] Display item")
