@@ -242,7 +242,7 @@ class InventorySystem:
             if choice == "1":
                 self.add_item()
             elif choice == "2":
-                print(Fore.MAGENTA + "\nUpdate item selected\n")
+                self.update_item()
             elif choice == "3":
                 print(Fore.MAGENTA + "\nDisplay existing item selected\n")
             elif choice == "4":
@@ -295,6 +295,57 @@ class InventorySystem:
         ])
 
         print(Fore.MAGENTA + "\nItem added successfully.\n")
+    
+    def update_item(self):
+        """
+        Update existing supplies records.
+        """
+        worksheet_supplies = self.sheet.worksheet("Supplies")
+        print(Fore.CYAN + "\n=== Update an existing item ===\n")
+
+        product_id = input(Fore.GREEN + "Enter the Item ID to update (e.g., SUP-0001): ").strip()
+        try:
+            cell = worksheet_supplies.find(product_id)
+        except gspread.exceptions.CellNotFound:
+            print(Fore.RED + "Item ID not found.")
+            return
+
+        row_index = cell.row
+        row_values = worksheet_supplies.row_values(row_index)
+
+        print(Fore.YELLOW + "\nCurrent Values (press ENTER to leave unchanged):")
+        fields = ["ID", "Product", "Brand", "Quantity", "Category", "Notes"]
+
+        updated_values = []
+        for i, field in enumerate(fields):
+            # Always keep ID unchanged
+            if field == "ID":
+                updated_values.append(row_values[i])
+                continue
+
+            current = row_values[i] if i < len(row_values) else ""
+            new_value = input(Fore.GREEN + f"{field} [{current}]: ").strip()
+
+            if new_value == "":
+                updated_values.append(current)
+            else:
+                if field == "Quantity":
+                    while True:
+                        try:
+                            qty = int(new_value)
+                            if qty < 0:
+                                raise ValueError
+                            updated_values.append(str(qty))
+                            break
+                        except ValueError:
+                            new_value = input(Fore.RED + "Quantity must be a non-negative integer. Try again: ").strip()
+                else:
+                    updated_values.append(new_value)
+
+        # Update the row in the sheet
+        worksheet_supplies.update(f"A{row_index}:F{row_index}", [updated_values])
+        print(Fore.MAGENTA + "\nItem updated successfully.")
+
 
 
 if __name__ == "__main__":
