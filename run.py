@@ -57,7 +57,7 @@ class InventorySystem:
             if choice == "1":
                 self.add_book()
             elif choice == "2":
-                print(Fore.MAGENTA + "\nUpdate existing book selected\n")
+                self.update_book()
             elif choice == "3":
                 print(Fore.MAGENTA + "\nDisplay existing book selected\n")
             elif choice == "4":
@@ -130,12 +130,15 @@ class InventorySystem:
 
 
     def add_book(self):
+        """
+        Adds a new book to the existing library records.
+        """
         worksheet_library = self.sheet.worksheet("Library")
         print(Fore.CYAN + "\n=== Add a new book ===\n")
 
         # Use ID suggestion system
         book_id = self._ask_for_id_with_suggestion("LIB-", worksheet_library)
-        if book_id is None:  # user cancelled
+        if book_id is None:  
             return
 
         title = input(Fore.GREEN + "Enter title: ").strip()
@@ -166,8 +169,63 @@ class InventorySystem:
         ])
 
         print(Fore.MAGENTA + "\nBook added successfully.\n")
+    
+
+    def update_book(self):
+        """
+        Update existing library records.
+        """
+        worksheet_library = self.sheet.worksheet("Library")
+        print(Fore.CYAN + "\n=== Update an existing book ===\n")
+
+        book_id = input(Fore.GREEN + "Enter the Book ID to update (e.g., LIB-0001): ").strip()
+        try:
+            cell = worksheet_library.find(book_id)
+        except gspread.exceptions.CellNotFound:
+            print(Fore.RED + "Book ID not found.")
+            return
+
+        row_index = cell.row
+        row_values = worksheet_library.row_values(row_index)
+
+        print(Fore.YELLOW + "\nCurrent Values (press ENTER to leave unchanged):")
+        fields = ["ID", "Title", "Author", "Quantity", "Category", "Notes"]
+
+        updated_values = []
+        for i, field in enumerate(fields):
+            # Always keep ID unchanged
+            if field == "ID":
+                updated_values.append(row_values[i])
+                continue
+
+            current = row_values[i] if i < len(row_values) else ""
+            new_value = input(Fore.GREEN + f"{field} [{current}]: ").strip()
+
+            if new_value == "":
+                updated_values.append(current)
+            else:
+                if field == "Quantity":
+                    while True:
+                        try:
+                            qty = int(new_value)
+                            if qty < 0:
+                                raise ValueError
+                            updated_values.append(str(qty))
+                            break
+                        except ValueError:
+                            new_value = input(Fore.RED + "Quantity must be a non-negative integer. Try again: ").strip()
+                else:
+                    updated_values.append(new_value)
+
+        # Update the row in the sheet
+        worksheet_library.update(f"A{row_index}:F{row_index}", [updated_values])
+        print(Fore.MAGENTA + "\nBook updated successfully.")
 
 
+
+
+
+    # The second part of the inventory system starts here:
     def option_two_supplies(self):
         """
         Option two allows users to access and manage the records of the supplies department.
@@ -204,7 +262,7 @@ class InventorySystem:
 
         # Use ID suggestion system with SUP- prefix
         product_id = self._ask_for_id_with_suggestion("SUP-", worksheet_supplies)
-        if product_id is None:  # user cancelled
+        if product_id is None:  
             return
 
         # Collect input from user
