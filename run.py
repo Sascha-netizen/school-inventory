@@ -168,10 +168,6 @@ class InventorySystem:
         print(Fore.MAGENTA + "\nBook added successfully.\n")
 
 
-
-
-
-
     def option_two_supplies(self):
         """
         Option two allows users to access and manage the records of the supplies department.
@@ -200,14 +196,18 @@ class InventorySystem:
                 print(Fore.RED + Style.BRIGHT + "\nInvalid choice. Please choose options [1] to [5]\n")
 
     def add_item(self):
+        """
+        Add a new supplies item to the Supplies worksheet with automatic ID suggestion.
+        """
         worksheet_supplies = self.sheet.worksheet("Supplies")
         print(Fore.CYAN + "\n=== Add a new supplies item ===\n")
 
-        # Use ID suggestion system
+        # Use ID suggestion system with SUP- prefix
         product_id = self._ask_for_id_with_suggestion("SUP-", worksheet_supplies)
         if product_id is None:  # user cancelled
             return
 
+        # Collect input from user
         product = input(Fore.GREEN + "Enter product: ").strip()
         brand = input(Fore.GREEN + "Enter brand: ").strip()
 
@@ -221,11 +221,12 @@ class InventorySystem:
                     continue
                 break
             except ValueError:
-                print(Fore.RED + "Invalid input. Enter a number.")
+                print(Fore.RED + "Invalid input. Please enter a numeric value.")
 
         category = input(Fore.GREEN + "Enter category: ").strip()
         notes = input(Fore.GREEN + "Enter notes: ").strip()
 
+        # Append new row to the worksheet
         worksheet_supplies.append_row([
             product_id,
             product,
@@ -237,7 +238,6 @@ class InventorySystem:
 
         print(Fore.MAGENTA + "\nItem added successfully.\n")
 
-        
 
 if __name__ == "__main__":
     inventory_system = InventorySystem(SHEET)
