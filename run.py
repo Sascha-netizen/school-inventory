@@ -8,7 +8,7 @@ SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
-    ]
+]
 
 CREDS = Credentials.from_service_account_file("creds.json")
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
@@ -22,9 +22,7 @@ class InventorySystem:
     """
     def __init__(self, sheet):
         self.sheet = sheet
-    
-    
-    
+
     def choose_inventory(self):
         """
         Displays main inventory options and allows user to choose between either library or supplies.
@@ -40,9 +38,8 @@ class InventorySystem:
                 return "Library"
             elif choice == "2":
                 return "Supplies"
-            
             else:
-                print(Fore.RED + Style.BRIGHT + "\nYour choice is invalid. Please choose 1 or 2.\n") 
+                print(Fore.RED + Style.BRIGHT + "\nYour choice is invalid. Please choose 1 or 2.\n")
 
     def option_one_library(self):
         """
@@ -71,14 +68,76 @@ class InventorySystem:
             else:
                 print(Fore.RED + Style.BRIGHT + "\nInvalid choice. Please choose options [1] to [5]\n")
 
+    def _generate_suggested_id(self, prefix: str, worksheet):
+        """
+        Suggest next ID based on existing ID numbers.
+        """
+        try:
+            existing_ids = worksheet.col_values(1)
+        except Exception:
+            existing_ids = []
+        
+        numbers = []
+        for entry in existing_ids:
+            if not entry:
+                continue
+            entry = entry.strip()
+            if entry.startswith(prefix):
+                suffix = entry[len(prefix):]
+                if suffix.isdigit():
+                    numbers.append(int(suffix))
+
+        next_num = (max(numbers) +1) if numbers else 1
+        return f"{prefix}{next_num:04d}"    
+
+    def _ask_for_id_with_suggestion(self, prefix: str, worksheet):
+        """
+        Show suggested ID, allow override, validate input, and prevent duplicates.
+        """
+        import re
+        suggestion = self._generate_suggested_id(prefix, worksheet)
+        pattern = re.compile(rf"^{re.escape(prefix)}\d{{4}}$")
+
+        while True:
+            print(Fore.YELLOW + f"Suggested ID: {suggestion}")
+            user_input = input(
+                Fore.GREEN + "Press Enter to accept or type a custom ID (q to cancel): "
+            ).strip()
+
+            if user_input == "":
+                chosen_id = suggestion
+
+            elif user_input.lower() in ("q", "quit", "cancel"):
+                print(Fore.MAGENTA + "Operation cancelled.")
+                return None
+
+            else:
+                chosen_id = user_input
+                if not pattern.match(chosen_id):
+                    print(Fore.RED + f"ID must match format {prefix}#### (e.g. {prefix}0001)")
+                    continue
+
+            existing_ids = worksheet.col_values(1)
+            if chosen_id in existing_ids:
+                print(Fore.RED + "This ID already exists. Choose another.")
+                continue
+
+            return chosen_id   
+
+
     def add_book(self):
         worksheet_library = self.sheet.worksheet("Library")
         print(Fore.CYAN + "\n=== Add a new book ===\n")
-        book_id = input(Fore.GREEN + "Enter book ID: ").strip()
+
+        # Use ID suggestion system
+        book_id = self._ask_for_id_with_suggestion("LIB-", worksheet_library)
+        if book_id is None:  # user cancelled
+            return
+
         title = input(Fore.GREEN + "Enter title: ").strip()
         author = input(Fore.GREEN + "Enter author: ").strip()
 
-        # Error handling for book quantity input.
+        # Quantity validation
         while True:
             quantity_input = input(Fore.GREEN + "Enter Quantity: ").strip()
             try:
@@ -88,14 +147,24 @@ class InventorySystem:
                     continue
                 break
             except ValueError:
-                print(Fore.RED + "Invalid input. Please enter a numeric value for quantity.")
+                print(Fore.RED + "Invalid input. Please enter a numeric value.")
 
         category = input(Fore.GREEN + "Enter category: ").strip()
         notes = input(Fore.GREEN + "Enter notes: ").strip()
 
-        # Append new row to library worksheet.
-        worksheet_library.append_row([book_id, title, author, quantity, category, notes])
+        worksheet_library.append_row([
+            book_id,
+            title,
+            author,
+            str(quantity),
+            category,
+            notes
+        ])
+
         print(Fore.MAGENTA + "\nBook added successfully.\n")
+
+
+
 
 
 
@@ -126,15 +195,19 @@ class InventorySystem:
             else:
                 print(Fore.RED + Style.BRIGHT + "\nInvalid choice. Please choose options [1] to [5]\n")
 
-
     def add_item(self):
         worksheet_supplies = self.sheet.worksheet("Supplies")
         print(Fore.CYAN + "\n=== Add a new supplies item ===\n")
-        product_id = input(Fore.GREEN + "Enter product ID: ").strip()
+
+        # Use ID suggestion system
+        product_id = self._ask_for_id_with_suggestion("SUP-", worksheet_supplies)
+        if product_id is None:  # user cancelled
+            return
+
         product = input(Fore.GREEN + "Enter product: ").strip()
         brand = input(Fore.GREEN + "Enter brand: ").strip()
 
-        # Error handling for supplies quantity input.
+        # Quantity validation
         while True:
             quantity_input = input(Fore.GREEN + "Enter Quantity: ").strip()
             try:
@@ -144,15 +217,23 @@ class InventorySystem:
                     continue
                 break
             except ValueError:
-                print(Fore.RED + "Invalid input. Please enter a numeric value for quantity.")
+                print(Fore.RED + "Invalid input. Enter a number.")
 
         category = input(Fore.GREEN + "Enter category: ").strip()
         notes = input(Fore.GREEN + "Enter notes: ").strip()
 
-        # Add new row to supplies worksheet.
-        worksheet_supplies.append_row([product_id, product, brand, quantity, category, notes])
+        worksheet_supplies.append_row([
+            product_id,
+            product,
+            brand,
+            str(quantity),
+            category,
+            notes
+        ])
+
         print(Fore.MAGENTA + "\nItem added successfully.\n")
 
+        
 
 if __name__ == "__main__":
     inventory_system = InventorySystem(SHEET)
@@ -166,6 +247,3 @@ if __name__ == "__main__":
 
         elif selected_inventory == "Supplies":
             inventory_system.option_two_supplies()
-
-
-    
