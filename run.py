@@ -69,27 +69,31 @@ class InventorySystem:
                 print(Fore.RED + Style.BRIGHT + "\nInvalid choice. Please choose options [1] to [5]\n")
 
     def _generate_suggested_id(self, prefix: str, worksheet):
-        """
-        Suggest next ID based on existing ID numbers.
-        """
-        try:
-            existing_ids = worksheet.col_values(1)
-        except Exception:
-            existing_ids = []
-        
-        numbers = []
-        for entry in existing_ids:
-            if not entry:
-                continue
-            entry = entry.strip()
-            if entry.startswith(prefix):
-                suffix = entry[len(prefix):]
-                if suffix.isdigit():
-                    numbers.append(int(suffix))
+            """
+            Suggest the next available ID based on existing IDs, filling gaps if possible.
+            """
+            try:
+                existing_ids = worksheet.col_values(1)
+            except Exception:
+                existing_ids = []
 
-        next_num = (max(numbers) +1) if numbers else 1
-        return f"{prefix}{next_num:04d}"    
+            # Extract numeric suffixes
+            numbers = sorted(
+                int(entry[len(prefix):]) for entry in existing_ids
+                if entry.startswith(prefix) and entry[len(prefix):].isdigit()
+            )
 
+            # Find the smallest missing number in the sequence
+            next_num = 1
+            for num in numbers:
+                if num == next_num:
+                    next_num += 1
+                elif num > next_num:
+                    break  # found a gap
+
+            return f"{prefix}{next_num:04d}"
+
+    
     def _ask_for_id_with_suggestion(self, prefix: str, worksheet):
         """
         Show suggested ID, allow override, validate input, and prevent duplicates.
