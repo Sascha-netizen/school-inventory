@@ -111,8 +111,7 @@ class InventorySystem:
             elif choice == "2":
                 self.update_book()
             elif choice == "3":
-                library_headers = ["ID", "Title", "Author", "Quantity", "Category", "Notes"]
-                self._search_record(self.sheet.worksheet("Library"), library_headers)
+                self.search_book()
             elif choice == "4":
                 print(Fore.MAGENTA + "\nDelete existing book selected\n")
             elif choice == "5":
@@ -275,7 +274,12 @@ class InventorySystem:
         print(Fore.MAGENTA + "\nBook updated successfully.")
 
 
-
+    def search_book(self):
+        """
+        Search or display library records.
+        """
+        library_headers = ["ID", "Title", "Author", "Quantity", "Category", "Notes"]
+        self._search_record(self.sheet.worksheet("Library"), library_headers)
 
 
     # The second part of the inventory system starts here:
@@ -297,8 +301,7 @@ class InventorySystem:
             elif choice == "2":
                 self.update_item()
             elif choice == "3":
-                supplies_headers = ["ID", "Product", "Brand", "Quantity", "Category", "Notes"]
-                self._search_record(self.sheet.worksheet("Supplies"), supplies_headers)
+                self.search_item()
             elif choice == "4":
                 print(Fore.MAGENTA + "\nDelete existing item selected\n")
             elif choice == "5":
@@ -400,6 +403,13 @@ class InventorySystem:
         worksheet_supplies.update(f"A{row_index}:F{row_index}", [updated_values])
         print(Fore.MAGENTA + "\nItem updated successfully.")
 
+
+    def search_item(self):
+        """
+        Search or display supplies records.
+        """
+        supplies_headers = ["ID", "Product", "Brand", "Quantity", "Category", "Notes"]
+        self._search_record(self.sheet.worksheet("Supplies"), supplies_headers)
 
 
 if __name__ == "__main__":
