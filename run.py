@@ -308,13 +308,6 @@ class InventorySystem:
 
 
 
-
-
-
-
-
-
-
     # The second part of the inventory system starts here:
     def option_two_supplies(self):
         """
@@ -336,7 +329,7 @@ class InventorySystem:
             elif choice == "3":
                 self.search_item()
             elif choice == "4":
-                print(Fore.MAGENTA + "\nDelete existing item selected\n")
+                self.delete_item()
             elif choice == "5":
                 print(Fore.MAGENTA + "\nEnd of session selected\n")
                 break
@@ -443,6 +436,34 @@ class InventorySystem:
         """
         supplies_headers = ["ID", "Product", "Brand", "Quantity", "Category", "Notes"]
         self._search_record(self.sheet.worksheet("Supplies"), supplies_headers)
+    
+
+
+    def delete_item(self):
+        """
+        Delete an item from the supplies worksheet by its ID.
+        """
+        worksheet_supplies = self.sheet.worksheet("Supplies")
+        item_id = input(Fore.GREEN + "Enter the Item ID to delete (e.g., SUP-0001, q to cancel): ").strip()
+
+        if item_id.lower() in ("q", "quit", "cancel"):
+            print(Fore.MAGENTA + "Delete operation cancelled.")
+            return
+        
+        try:
+            cell = worksheet_supplies.find(item_id)
+        except gspread.exceptions.CellNotFound:
+            print(Fore.RED + "Item ID not found.")
+            return
+        
+        confirm = input(Fore.YELLOW + f"Are you sure you want to delete item {item_id}? (y/n): ").strip().lower()
+        if confirm == "y":
+            worksheet_supplies.delete_rows(cell.row)
+            print(Fore.MAGENTA + f"Item {item_id} deleted successfully.")
+        else:
+            print(Fore.MAGENTA + "Delete operation cancelled.")
+
+
 
 
 if __name__ == "__main__":
