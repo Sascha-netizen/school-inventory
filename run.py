@@ -40,6 +40,58 @@ class InventorySystem:
                 return "Supplies"
             else:
                 print(Fore.RED + Style.BRIGHT + "\nYour choice is invalid. Please choose 1 or 2.\n")
+    
+
+    def _search_record(self, worksheet, headers):
+        """
+        Generic search function for both library and supplies. Records are searchable by chosen columns (submenu).
+        """
+        rows = worksheet.get_all_values()
+        if not rows:
+            print(Fore.RED + "No records found in this sheet.")
+            return
+        
+        data_headers = rows[0]
+        data_rows = rows[1:]
+    
+        # Ask user which column to search
+        if headers:
+            print(Fore.BLUE + "\n=== Search Options ===\n")
+            for i, h in enumerate(headers):
+                print(Fore.YELLOW + f"[{i+1}] {h}")
+            print(Fore.YELLOW + f"[{len(headers)+1}] View all records")
+
+            while True:
+                choice = input(Fore.GREEN + f"Choose an option [1-{len(headers)+1}]: ").strip()
+                if choice.isdigit() and 1 <= int(choice) <= len(headers)+1:
+                    choice = int(choice)
+                    break
+                else: 
+                    print(Fore.RED + "Invalid choice. Try again!")
+                
+            # View entire record
+            if choice == len(headers)+1:
+                results = data_rows
+            else:
+                col_index = choice -1
+                keyword = input(Fore.GREEN + f"Enter keyword for {headers[col_index]}: ").strip().lower()
+                results = [row for row in data_rows if keyword in row[col_index].lower()]
+        
+        else: 
+            # if no headers provided, display entire record
+            results = data_rows
+        
+        if not results:
+            print(Fore.RED + "No matching records found.")
+            return
+        
+        print(Fore.YELLOW + "\n===Search results===")
+        print(Fore.CYAN + " | ".join(data_headers))
+        print(Fore.CYAN + "-"*60)
+        for row in results:
+            print(Fore.MAGENTA + " | ".join(row))
+        print()    
+
 
     def option_one_library(self):
         """
@@ -48,7 +100,7 @@ class InventorySystem:
         print(Fore.BLUE + Style.BRIGHT + "\n====You are now managing the Library====\n")
         print(Fore.YELLOW + "[1] Add book")
         print(Fore.YELLOW + "[2] Update existing book")
-        print(Fore.YELLOW + "[3] Display book")
+        print(Fore.YELLOW + "[3] Search or display book")
         print(Fore.YELLOW + "[4] Delete book")
         print(Fore.YELLOW + "[5] Exit / End of session")
 
@@ -59,7 +111,8 @@ class InventorySystem:
             elif choice == "2":
                 self.update_book()
             elif choice == "3":
-                print(Fore.MAGENTA + "\nDisplay existing book selected\n")
+                library_headers = ["ID", "Title", "Author", "Quantity", "Category", "Notes"]
+                self._search_record(self.sheet.worksheet("Library"), library_headers)
             elif choice == "4":
                 print(Fore.MAGENTA + "\nDelete existing book selected\n")
             elif choice == "5":
@@ -233,7 +286,7 @@ class InventorySystem:
         print(Fore.BLUE + Style.BRIGHT + "\n====You are now managing the Supplies====\n")
         print(Fore.YELLOW + "[1] Add item")
         print(Fore.YELLOW + "[2] Update existing item")
-        print(Fore.YELLOW + "[3] Display item")
+        print(Fore.YELLOW + "[3] Search or display item")
         print(Fore.YELLOW + "[4] Delete item")
         print(Fore.YELLOW + "[5] Exit / End of session")
 
@@ -244,7 +297,8 @@ class InventorySystem:
             elif choice == "2":
                 self.update_item()
             elif choice == "3":
-                print(Fore.MAGENTA + "\nDisplay existing item selected\n")
+                supplies_headers = ["ID", "Product", "Brand", "Quantity", "Category", "Notes"]
+                self._search_record(self.sheet.worksheet("Supplies"), supplies_headers)
             elif choice == "4":
                 print(Fore.MAGENTA + "\nDelete existing item selected\n")
             elif choice == "5":
