@@ -113,7 +113,7 @@ class InventorySystem:
             elif choice == "3":
                 self.search_book()
             elif choice == "4":
-                print(Fore.MAGENTA + "\nDelete existing book selected\n")
+                self.delete_book()
             elif choice == "5":
                 print(Fore.MAGENTA + "\nEnd of session. Returning to main menu\n")
                 break
@@ -280,6 +280,39 @@ class InventorySystem:
         """
         library_headers = ["ID", "Title", "Author", "Quantity", "Category", "Notes"]
         self._search_record(self.sheet.worksheet("Library"), library_headers)
+    
+
+    def delete_book(self):
+        """
+        Delete a book from the library by its ID.
+        """
+        worksheet_library = self.sheet.worksheet("Library")
+        book_id = input(Fore.GREEN + "Enter the book ID to delete (e.g., LIB-0001, q to cancel): ").strip()
+
+        if book_id.lower() in ("q", "quit", "cancel"):
+            print(Fore.MAGENTA + "Delete operation cancelled.")
+            return
+        
+        try:
+            cell = worksheet_library.find(book_id)
+        except gspread.exceptions.CellNotFound:
+            print(Fore.RED + "Book ID not found.")
+            return
+        
+        confirm = input(Fore.YELLOW + f"Are you sure you want to delete book {book_id}? (y/n): ").strip().lower()
+        if confirm == "y":
+            worksheet_library.delete_rows(cell.row)
+            print(Fore.MAGENTA + f"Book {book_id} deleted successfully.")
+        else:
+            print(Fore.MAGENTA + "Delete operation cancelled.")
+
+
+
+
+
+
+
+
 
 
     # The second part of the inventory system starts here:
