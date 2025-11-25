@@ -1,6 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 from colorama import Fore, Style, init
+from google.auth.exceptions import GoogleAuthError
 
 init(autoreset=True)
 
@@ -14,6 +15,23 @@ CREDS = Credentials.from_service_account_file("creds.json")
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("school_inventory_system")
+
+
+def safe_api_call(func, *args, **kwargs):
+    """
+    Error handling - if an error occurs, the function returns None and prints some advice.
+    """
+    try:
+        return func(*args, **kwargs)
+
+    except gspread.exceptions.GSpreadException:
+        print(Fore.RED + "A Google Sheets error occurred.")
+    except GoogleAuthError:
+        print(Fore.RED + "Authentication error. Check your credentials file.")
+    except Exception as e:
+        print(Fore.RED + f"Unexpected error: {e}")
+
+    return None
 
 
 class InventorySystem:
@@ -40,21 +58,19 @@ class InventorySystem:
                 return "Supplies"
             else:
                 print(Fore.RED + Style.BRIGHT + "\nYour choice is invalid. Please choose 1 or 2.\n")
-    
 
     def _search_record(self, worksheet, headers):
         """
         Generic search function for both library and supplies. Records are searchable by chosen columns (submenu).
         """
-        rows = worksheet.get_all_values()
+        rows = safe_api_call(worksheet.get_all_values)
         if not rows:
             print(Fore.RED + "No records found in this sheet.")
             return
-        
+
         data_headers = rows[0]
         data_rows = rows[1:]
-    
-        # Ask user which column to search
+
         if headers:
             print(Fore.BLUE + "\n=== Search Options ===\n")
             for i, h in enumerate(headers):
@@ -66,32 +82,29 @@ class InventorySystem:
                 if choice.isdigit() and 1 <= int(choice) <= len(headers)+1:
                     choice = int(choice)
                     break
-                else: 
+                else:
                     print(Fore.RED + "Invalid choice. Try again!")
-                
-            # View entire record
+
             if choice == len(headers)+1:
                 results = data_rows
             else:
-                col_index = choice -1
+                col_index = choice - 1
                 keyword = input(Fore.GREEN + f"Enter keyword for {headers[col_index]}: ").strip().lower()
                 results = [row for row in data_rows if keyword in row[col_index].lower()]
-        
-        else: 
-            # if no headers provided, display entire record
+
+        else:
             results = data_rows
-        
+
         if not results:
             print(Fore.RED + "No matching records found.")
             return
-        
+
         print(Fore.YELLOW + "\n===Search results===")
         print(Fore.CYAN + " | ".join(data_headers))
         print(Fore.CYAN + "-"*60)
         for row in results:
             print(Fore.MAGENTA + " | ".join(row))
-        print()    
-
+        print()
 
     def option_one_library(self):
         """
@@ -121,31 +134,27 @@ class InventorySystem:
                 print(Fore.RED + Style.BRIGHT + "\nInvalid choice. Please choose options [1] to [5]\n")
 
     def _generate_suggested_id(self, prefix: str, worksheet):
-            """
-            Suggest the next available ID based on existing IDs, filling gaps if possible.
-            """
-            try:
-                existing_ids = worksheet.col_values(1)
-            except Exception:
-                existing_ids = []
+        """
+        Suggest the next available ID based on existing IDs, filling gaps if possible.
+        """
+        existing_ids = safe_api_call(worksheet.col_values, 1)
+        if existing_ids is None:
+            existing_ids = []
 
-            # Extract numeric suffixes
-            numbers = sorted(
-                int(entry[len(prefix):]) for entry in existing_ids
-                if entry.startswith(prefix) and entry[len(prefix):].isdigit()
-            )
+        numbers = sorted(
+            int(entry[len(prefix):]) for entry in existing_ids
+            if entry.startswith(prefix) and entry[len(prefix):].isdigit()
+        )
 
-            # Find the smallest missing number in the sequence
-            next_num = 1
-            for num in numbers:
-                if num == next_num:
-                    next_num += 1
-                elif num > next_num:
-                    break  # found a gap
+        next_num = 1
+        for num in numbers:
+            if num == next_num:
+                next_num += 1
+            elif num > next_num:
+                break
 
-            return f"{prefix}{next_num:04d}"
+        return f"{prefix}{next_num:04d}"
 
-    
     def _ask_for_id_with_suggestion(self, prefix: str, worksheet):
         """
         Show suggested ID, allow override, validate input, and prevent duplicates.
@@ -156,47 +165,40 @@ class InventorySystem:
 
         while True:
             print(Fore.YELLOW + f"Suggested ID: {suggestion}")
-            user_input = input(
-                Fore.GREEN + "Press Enter to accept or type a custom ID (q to cancel): "
-            ).strip()
+            user_input = input(Fore.GREEN + "Press Enter to accept or type a custom ID (q to cancel): ").strip()
 
             if user_input == "":
                 chosen_id = suggestion
-
             elif user_input.lower() in ("q", "quit", "cancel"):
                 print(Fore.MAGENTA + "Operation cancelled.")
                 return None
-
             else:
                 chosen_id = user_input
                 if not pattern.match(chosen_id):
                     print(Fore.RED + f"ID must match format {prefix}#### (e.g. {prefix}0001)")
                     continue
 
-            existing_ids = worksheet.col_values(1)
+            existing_ids = safe_api_call(worksheet.col_values, 1) or []
             if chosen_id in existing_ids:
                 print(Fore.RED + "This ID already exists. Choose another.")
                 continue
 
-            return chosen_id   
+            return chosen_id
 
-
+    # -------------------- Library Methods --------------------
     def add_book(self):
-        """
-        Adds a new book to the existing library records.
-        """
-        worksheet_library = self.sheet.worksheet("Library")
-        print(Fore.CYAN + "\n=== Add a new book ===\n")
+        worksheet_library = safe_api_call(self.sheet.worksheet, "Library")
+        if worksheet_library is None:
+            return
 
-        # Use ID suggestion system
+        print(Fore.CYAN + "\n=== Add a new book ===\n")
         book_id = self._ask_for_id_with_suggestion("LIB-", worksheet_library)
-        if book_id is None:  
+        if book_id is None:
             return
 
         title = input(Fore.GREEN + "Enter title: ").strip()
         author = input(Fore.GREEN + "Enter author: ").strip()
 
-        # Quantity validation
         while True:
             quantity_input = input(Fore.GREEN + "Enter Quantity: ").strip()
             try:
@@ -211,43 +213,32 @@ class InventorySystem:
         category = input(Fore.GREEN + "Enter category: ").strip()
         notes = input(Fore.GREEN + "Enter notes: ").strip()
 
-        worksheet_library.append_row([
-            book_id,
-            title,
-            author,
-            str(quantity),
-            category,
-            notes
-        ])
-
+        safe_api_call(worksheet_library.append_row, [book_id, title, author, str(quantity), category, notes])
         print(Fore.MAGENTA + "\nBook added successfully.\n")
-    
 
     def update_book(self):
-        """
-        Update existing library records.
-        """
-        worksheet_library = self.sheet.worksheet("Library")
-        print(Fore.CYAN + "\n=== Update an existing book ===\n")
+        worksheet_library = safe_api_call(self.sheet.worksheet, "Library")
+        if worksheet_library is None:
+            return
 
+        print(Fore.CYAN + "\n=== Update an existing book ===\n")
         book_id = input(Fore.GREEN + "Enter the Book ID to update (e.g., LIB-0001): ").strip()
-        try:
-            cell = worksheet_library.find(book_id)
-        except gspread.exceptions.CellNotFound:
+
+        cell = safe_api_call(worksheet_library.find, book_id)
+        if cell is None:
             print(Fore.RED + "Book ID not found.")
             return
 
         row_index = cell.row
-        row_values = worksheet_library.row_values(row_index)
+        row_values = safe_api_call(worksheet_library.row_values, row_index) or []
 
         print(Fore.YELLOW + "\nCurrent Values (press ENTER to leave unchanged):")
         fields = ["ID", "Title", "Author", "Quantity", "Category", "Notes"]
-
         updated_values = []
+
         for i, field in enumerate(fields):
-            # Always keep ID unchanged
             if field == "ID":
-                updated_values.append(row_values[i])
+                updated_values.append(row_values[i] if i < len(row_values) else "")
                 continue
 
             current = row_values[i] if i < len(row_values) else ""
@@ -269,50 +260,41 @@ class InventorySystem:
                 else:
                     updated_values.append(new_value)
 
-        # Update the row in the sheet
-        worksheet_library.update(f"A{row_index}:F{row_index}", [updated_values])
+        safe_api_call(worksheet_library.update, f"A{row_index}:F{row_index}", [updated_values])
         print(Fore.MAGENTA + "\nBook updated successfully.")
 
-
     def search_book(self):
-        """
-        Search or display library records.
-        """
+        worksheet_library = safe_api_call(self.sheet.worksheet, "Library")
+        if worksheet_library is None:
+            return
+
         library_headers = ["ID", "Title", "Author", "Quantity", "Category", "Notes"]
-        self._search_record(self.sheet.worksheet("Library"), library_headers)
-    
+        self._search_record(worksheet_library, library_headers)
 
     def delete_book(self):
-        """
-        Delete a book from the library by its ID.
-        """
-        worksheet_library = self.sheet.worksheet("Library")
-        book_id = input(Fore.GREEN + "Enter the book ID to delete (e.g., LIB-0001, q to cancel): ").strip()
+        worksheet_library = safe_api_call(self.sheet.worksheet, "Library")
+        if worksheet_library is None:
+            return
 
+        book_id = input(Fore.GREEN + "Enter the book ID to delete (e.g., LIB-0001, q to cancel): ").strip()
         if book_id.lower() in ("q", "quit", "cancel"):
             print(Fore.MAGENTA + "Delete operation cancelled.")
             return
-        
-        try:
-            cell = worksheet_library.find(book_id)
-        except gspread.exceptions.CellNotFound:
+
+        cell = safe_api_call(worksheet_library.find, book_id)
+        if cell is None:
             print(Fore.RED + "Book ID not found.")
             return
-        
+
         confirm = input(Fore.YELLOW + f"Are you sure you want to delete book {book_id}? (y/n): ").strip().lower()
         if confirm == "y":
-            worksheet_library.delete_rows(cell.row)
+            safe_api_call(worksheet_library.delete_rows, cell.row)
             print(Fore.MAGENTA + f"Book {book_id} deleted successfully.")
         else:
             print(Fore.MAGENTA + "Delete operation cancelled.")
 
-
-
-    # The second part of the inventory system starts here:
+    # -------------------- Supplies Methods --------------------
     def option_two_supplies(self):
-        """
-        Option two allows users to access and manage the records of the supplies department.
-        """
         print(Fore.BLUE + Style.BRIGHT + "\n====You are now managing the Supplies====\n")
         print(Fore.YELLOW + "[1] Add item")
         print(Fore.YELLOW + "[2] Update existing item")
@@ -337,22 +319,18 @@ class InventorySystem:
                 print(Fore.RED + Style.BRIGHT + "\nInvalid choice. Please choose options [1] to [5]\n")
 
     def add_item(self):
-        """
-        Add a new supplies item to the Supplies worksheet with automatic ID suggestion.
-        """
-        worksheet_supplies = self.sheet.worksheet("Supplies")
-        print(Fore.CYAN + "\n=== Add a new supplies item ===\n")
-
-        # Use ID suggestion system with SUP- prefix
-        product_id = self._ask_for_id_with_suggestion("SUP-", worksheet_supplies)
-        if product_id is None:  
+        worksheet_supplies = safe_api_call(self.sheet.worksheet, "Supplies")
+        if worksheet_supplies is None:
             return
 
-        # Collect input from user
+        print(Fore.CYAN + "\n=== Add a new supplies item ===\n")
+        product_id = self._ask_for_id_with_suggestion("SUP-", worksheet_supplies)
+        if product_id is None:
+            return
+
         product = input(Fore.GREEN + "Enter product: ").strip()
         brand = input(Fore.GREEN + "Enter brand: ").strip()
 
-        # Quantity validation
         while True:
             quantity_input = input(Fore.GREEN + "Enter Quantity: ").strip()
             try:
@@ -367,43 +345,32 @@ class InventorySystem:
         category = input(Fore.GREEN + "Enter category: ").strip()
         notes = input(Fore.GREEN + "Enter notes: ").strip()
 
-        # Append new row to the worksheet
-        worksheet_supplies.append_row([
-            product_id,
-            product,
-            brand,
-            str(quantity),
-            category,
-            notes
-        ])
-
+        safe_api_call(worksheet_supplies.append_row, [product_id, product, brand, str(quantity), category, notes])
         print(Fore.MAGENTA + "\nItem added successfully.\n")
-    
-    def update_item(self):
-        """
-        Update existing supplies records.
-        """
-        worksheet_supplies = self.sheet.worksheet("Supplies")
-        print(Fore.CYAN + "\n=== Update an existing item ===\n")
 
+    def update_item(self):
+        worksheet_supplies = safe_api_call(self.sheet.worksheet, "Supplies")
+        if worksheet_supplies is None:
+            return
+
+        print(Fore.CYAN + "\n=== Update an existing item ===\n")
         product_id = input(Fore.GREEN + "Enter the Item ID to update (e.g., SUP-0001): ").strip()
-        try:
-            cell = worksheet_supplies.find(product_id)
-        except gspread.exceptions.CellNotFound:
+
+        cell = safe_api_call(worksheet_supplies.find, product_id)
+        if cell is None:
             print(Fore.RED + "Item ID not found.")
             return
 
         row_index = cell.row
-        row_values = worksheet_supplies.row_values(row_index)
+        row_values = safe_api_call(worksheet_supplies.row_values, row_index) or []
 
         print(Fore.YELLOW + "\nCurrent Values (press ENTER to leave unchanged):")
         fields = ["ID", "Product", "Brand", "Quantity", "Category", "Notes"]
-
         updated_values = []
+
         for i, field in enumerate(fields):
-            # Always keep ID unchanged
             if field == "ID":
-                updated_values.append(row_values[i])
+                updated_values.append(row_values[i] if i < len(row_values) else "")
                 continue
 
             current = row_values[i] if i < len(row_values) else ""
@@ -425,45 +392,38 @@ class InventorySystem:
                 else:
                     updated_values.append(new_value)
 
-        # Update the row in the sheet
-        worksheet_supplies.update(f"A{row_index}:F{row_index}", [updated_values])
+        safe_api_call(worksheet_supplies.update, f"A{row_index}:F{row_index}", [updated_values])
         print(Fore.MAGENTA + "\nItem updated successfully.")
 
-
     def search_item(self):
-        """
-        Search or display supplies records.
-        """
-        supplies_headers = ["ID", "Product", "Brand", "Quantity", "Category", "Notes"]
-        self._search_record(self.sheet.worksheet("Supplies"), supplies_headers)
-    
+        worksheet_supplies = safe_api_call(self.sheet.worksheet, "Supplies")
+        if worksheet_supplies is None:
+            return
 
+        supplies_headers = ["ID", "Product", "Brand", "Quantity", "Category", "Notes"]
+        self._search_record(worksheet_supplies, supplies_headers)
 
     def delete_item(self):
-        """
-        Delete an item from the supplies worksheet by its ID.
-        """
-        worksheet_supplies = self.sheet.worksheet("Supplies")
-        item_id = input(Fore.GREEN + "Enter the Item ID to delete (e.g., SUP-0001, q to cancel): ").strip()
+        worksheet_supplies = safe_api_call(self.sheet.worksheet, "Supplies")
+        if worksheet_supplies is None:
+            return
 
+        item_id = input(Fore.GREEN + "Enter the Item ID to delete (e.g., SUP-0001, q to cancel): ").strip()
         if item_id.lower() in ("q", "quit", "cancel"):
             print(Fore.MAGENTA + "Delete operation cancelled.")
             return
-        
-        try:
-            cell = worksheet_supplies.find(item_id)
-        except gspread.exceptions.CellNotFound:
+
+        cell = safe_api_call(worksheet_supplies.find, item_id)
+        if cell is None:
             print(Fore.RED + "Item ID not found.")
             return
-        
+
         confirm = input(Fore.YELLOW + f"Are you sure you want to delete item {item_id}? (y/n): ").strip().lower()
         if confirm == "y":
-            worksheet_supplies.delete_rows(cell.row)
+            safe_api_call(worksheet_supplies.delete_rows, cell.row)
             print(Fore.MAGENTA + f"Item {item_id} deleted successfully.")
         else:
             print(Fore.MAGENTA + "Delete operation cancelled.")
-
-
 
 
 if __name__ == "__main__":
@@ -475,6 +435,5 @@ if __name__ == "__main__":
 
         if selected_inventory == "Library":
             inventory_system.option_one_library()
-
         elif selected_inventory == "Supplies":
             inventory_system.option_two_supplies()
