@@ -97,7 +97,9 @@ As a staff member of a school, I want the programme to handle errors gracefully,
     <tr>
       <td><strong>Delete Item</strong></td>
       <td>Removes items by ID with a confirmation prompt. Cancelling or invalid IDs are handled safely to prevent accidental deletions.</td>
-      <td>screenshot</td>
+      <td> <img src="./documentation/delete-book-library.JPG" alt="User deletes book from library records"  width="300"><br>
+      <img src="./documentation/delete-item-supplies.JPG" alt="User deletes item from supplies records"  width="300">
+      </td>
     </tr>
     <tr>
       <td><strong>Input Validation</strong></td>
