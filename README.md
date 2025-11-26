@@ -78,7 +78,8 @@ As a staff member of a school, I want the programme to handle errors gracefully,
     <tr>
       <td><strong>Add Item</strong></td>
       <td>Allows staff to add new books or supplies with suggested unique IDs. Validates quantity as a non-negative integer and ensures no duplicate names or IDs exist.</td>
-      <td>screenshot</td>
+      <td> <img src="./documentation/add-book-library.JPG" alt="User adds book" width="300"> <br>
+      <img src="./documentation/add-item-supplies.JPG" alt="User adds supplies item" width="300"> </td>
     </tr>
     <tr>
       <td><strong>Update Item</strong></td>
