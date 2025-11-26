@@ -90,7 +90,9 @@ As a staff member of a school, I want the programme to handle errors gracefully,
     <tr>
       <td><strong>Search / Display Records</strong></td>
       <td>Staff can search by various columns or display all items. Search results are color-coded for readability and handle empty results gracefully.</td>
-      <td>screenshot</td>
+      <td> <img src="./documentation/search-book-library.JPG" alt="User searches book in library records" width="300"> <br>
+      <img src="./documentation/search-item-supplies.JPG" alt="User searches an item in the supplies records" width="300">
+      </td>
     </tr>
     <tr>
       <td><strong>Delete Item</strong></td>
@@ -102,18 +104,19 @@ As a staff member of a school, I want the programme to handle errors gracefully,
       <td>Validates numeric fields (quantity), unique IDs, and prevents duplicates. Ensures data integrity and prevents crashes.</td>
       <td>screenshot</td>
     </tr>
-    <tr>
-      <td><strong>Color-coded Feedback</strong></td>
-      <td>
-        Uses <code>colorama</code> to differentiate messages:<br>
-        <strong>Green:</strong> success<br>
-        <strong>Red:</strong> errors<br>
-        <strong>Yellow:</strong> warnings<br>
-        <strong>Blue:</strong> menus<br>
-        <strong>Magenta:</strong> highlights
-      </td>
-      <td>screenshot</td>
-    </tr>
+   <tr>
+  <td><strong>Colour-Coded Feedback</strong></td>
+  <td>
+    Uses <code>colorama</code> to visually distinguish messages:<br>
+    <strong>Blue:</strong> section titles and main menus<br>
+    <strong>Yellow:</strong> menu options and warnings<br>
+    <strong>Green:</strong> user prompts and input guidance<br>
+    <strong>Red:</strong> errors and invalid input<br>
+    <strong>Magenta:</strong> successful operations and cancellations<br>
+    <strong>Cyan:</strong> table headers in search results
+  </td>
+  <td>screenshot</td>
+</tr>
     <tr>
       <td><strong>Menu System</strong></td>
       <td>Interactive, looping menu allowing staff to navigate Library or Supplies sections, perform actions, and exit gracefully.</td>
