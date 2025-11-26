@@ -84,7 +84,8 @@ As a staff member of a school, I want the programme to handle errors gracefully,
     <tr>
       <td><strong>Update Item</strong></td>
       <td>Staff can update existing records by ID. Current values are displayed, allowing selective edits. Quantity validation ensures non-negative integers.</td>
-      <td>screenshot</td>
+      <td> <img src="./documentation/update-book-library.JPG" alt="User updates book record" width="300"><br> 
+      <img src="./documentation/update-item-supplies.JPG" alt="User updates supplies-item record" width="300"></td>
     </tr>
     <tr>
       <td><strong>Search / Display Records</strong></td>
