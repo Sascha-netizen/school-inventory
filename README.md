@@ -103,8 +103,8 @@ As a staff member of a school, I want the programme to handle errors gracefully,
     </tr>
     <tr>
       <td><strong>Input Validation</strong></td>
-      <td>Validates numeric fields (quantity), unique IDs, and prevents duplicates. Ensures data integrity and prevents crashes.</td>
-      <td>screenshot</td>
+      <td>Validates numeric fields (quantity), unique IDs, and prevents duplicates. Ensures data integrity and prevents crashes. Pars pro toto, the following screenshot demonstrates the handling of a negative quantity input.</td>
+      <td> <img src="./documentation/input-validation-error-handling.JPG" alt="User enters negative quantity and the system reacts" width="300"> </td>
     </tr>
    <tr>
   <td><strong>Colour-Coded Feedback</strong></td>
