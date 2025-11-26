@@ -55,8 +55,68 @@ Error Handling <br>
 As a staff member of a school, I want the programme to handle errors gracefully, so that I can rely on it without causing crashes or data loss.
 
 
+# Programme Features
+<br>
+## Current Functionalities: <br>
 
+<h2>Existing Features</h2>
 
-
-
-
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Notes</th>
+      <th>Screenshot</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Select Inventory Type</strong></td>
+      <td>Upon starting, staff choose between managing <strong>Library items</strong> or <strong>Supplies</strong>. This determines which dataset the following actions will affect.</td>
+      <td> <img src="./documentation/user-choice-start.JPG" alt="User choice" width="300"></td>
+    </tr>
+    <tr>
+      <td><strong>Add Item</strong></td>
+      <td>Allows staff to add new books or supplies with suggested unique IDs. Validates quantity as a non-negative integer and ensures no duplicate names or IDs exist.</td>
+      <td>screenshot</td>
+    </tr>
+    <tr>
+      <td><strong>Update Item</strong></td>
+      <td>Staff can update existing records by ID. Current values are displayed, allowing selective edits. Quantity validation ensures non-negative integers.</td>
+      <td>screenshot</td>
+    </tr>
+    <tr>
+      <td><strong>Search / Display Records</strong></td>
+      <td>Staff can search by various columns or display all items. Search results are color-coded for readability and handle empty results gracefully.</td>
+      <td>screenshot</td>
+    </tr>
+    <tr>
+      <td><strong>Delete Item</strong></td>
+      <td>Removes items by ID with a confirmation prompt. Cancelling or invalid IDs are handled safely to prevent accidental deletions.</td>
+      <td>screenshot</td>
+    </tr>
+    <tr>
+      <td><strong>Input Validation</strong></td>
+      <td>Validates numeric fields (quantity), unique IDs, and prevents duplicates. Ensures data integrity and prevents crashes.</td>
+      <td>screenshot</td>
+    </tr>
+    <tr>
+      <td><strong>Color-coded Feedback</strong></td>
+      <td>
+        Uses <code>colorama</code> to differentiate messages:<br>
+        <strong>Green:</strong> success<br>
+        <strong>Red:</strong> errors<br>
+        <strong>Yellow:</strong> warnings<br>
+        <strong>Blue:</strong> menus<br>
+        <strong>Magenta:</strong> highlights
+      </td>
+      <td>screenshot</td>
+    </tr>
+    <tr>
+      <td><strong>Menu System</strong></td>
+      <td>Interactive, looping menu allowing staff to navigate Library or Supplies sections, perform actions, and exit gracefully.</td>
+      <td>screenshot</td>
+    </tr>
+    <tr>
+      <td><strong>Google Sheets Integration</strong></td>
+      <td>Loads and updates inventory data from Google Sheets. All add, update, and delete opera
