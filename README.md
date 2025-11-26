@@ -57,7 +57,6 @@ As a staff member of a school, I want the programme to handle errors gracefully,
 
 # Programme Features
 <br>
-## Current Functionalities: <br>
 
 <h2>Existing Features</h2>
 
@@ -123,9 +122,16 @@ As a staff member of a school, I want the programme to handle errors gracefully,
 </tr>
     <tr>
       <td><strong>Menu System</strong></td>
-      <td>Interactive, looping menu allowing staff to navigate Library or Supplies sections, perform actions, and exit gracefully.</td>
-      <td>screenshot</td>
+      <td>Shows how the program loops through menu options, handles user choices, and returns to the main menu safely after exiting a session. Demonstrates robust input handling and user guidance.</td>
+      <td> <img src="./documentation/menu-looping-choices.JPG" alt="Programme loops effectively from option to option" width="300"> </td>
     </tr>
-    <tr>
-      <td><strong>Google Sheets Integration</strong></td>
-      <td>Loads and updates inventory data from Google Sheets. All add, update, and delete opera
+   <tr>
+  <td><strong>Google Sheets Integration</strong></td>
+  <td>Loads and updates inventory data from Google Sheets. All add, update, and delete operations are synchronized with the cloud sheet, ensuring persistent storage and real-time data consistency across sessions.</td>
+  <td>
+    <img src="./documentation/google-sheet-library.JPG" alt="Google sheet screenshot" width="300"> <br>
+    <img src="./documentation/google-sheet-supplies.JPG" alt="Google sheet screenshot" width="300">
+  </td>
+</tr>
+</tbody>
+</table>
