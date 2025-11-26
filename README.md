@@ -12,13 +12,13 @@ The school inventory system provides staff with a clear and user-friendly way to
 
 When planning this project, I wanted users to be able to:
 
-add, update, search, display and delete existing items,
+* add, update, search, display and delete existing items,
 
-monitor product usage,
+* monitor product usage,
 
-make informed decisions about restocking, and
+* make informed decisions about restocking, and
 
-access clear, colour-coded information for both library materials and general supplies.
+* access clear, colour-coded information for both library materials and general supplies.
 
 Although a wide range of commercial school management systems exist, many of them are costly, overly complex for smaller institutions, or simply beyond the budget of schools with limited resources. My aim was to create a lightweight, low-cost data-automation tool that allows schools to benefit from basic digital management without requiring significant financial investment. Such an in-house solution can save time, reduce errors, and act as an accessible first step towards adopting more sophisticated digital systems in the future.
 
@@ -27,31 +27,31 @@ My own experience working across a variety of schools in Egypt made it clear tha
 
 # User Stories:
 
-Inventory Management
+Inventory Management <br>
 As a staff member of a school, I want to utilise technology to manage library and supply records, so that I can dedicate more time to planning and teaching.
 
-Intuitive Interface
+Intuitive Interface <br>
 As a staff member of a school, I want the software to be user-friendly and easy to navigate, so that I can operate it independently without extensive training.
 
-Automated ID Suggestions
+Automated ID Suggestions <br>
 As a staff member of a school, I want the programme to suggest unique product IDs for new items, so that I do not have to assign them manually and risk duplication.
 
-Colour-Coded Feedback
+Colour-Coded Feedback <br>
 As a staff member of a school, I want important information and messages to be colour-coded, so that I can quickly identify the programme’s responses and functionality.
 
-Add Inventory Items
+Add Inventory Items <br>
 As a staff member of a school, I want to add new books or supplies to the inventory, so that I can maintain accurate records of all items.
 
-Update Records
+Update Records <br>
 As a staff member of a school, I want to update existing records, so that I can reflect restocking or changes in item details.
 
-Search and Display Items
+Search and Display Items <br>
 As a staff member of a school, I want to search for and display existing records, so that I can access up-to-date information about the school’s inventory.
 
-Delete Items
+Delete Items <br>
 As a staff member of a school, I want to delete obsolete or unused items from the records, so that the inventory remains relevant and uncluttered.
 
-Error Handling
+Error Handling <br>
 As a staff member of a school, I want the programme to handle errors gracefully, so that I can rely on it without causing crashes or data loss.
 
 
