@@ -117,7 +117,9 @@ As a staff member of a school, I want the programme to handle errors gracefully,
     <strong>Magenta:</strong> successful operations and cancellations<br>
     <strong>Cyan:</strong> table headers in search results
   </td>
-  <td>screenshot</td>
+  <td> <img src="./documentation/colour-coding-features-1.JPG" alt="Programme features are colour-coded for readability" width="300"> <br>
+  <img src="./documentation/colour-coding-features-2.JPG" alt="Programme features are colour-coded for readability" width="300">
+  </td>
 </tr>
     <tr>
       <td><strong>Menu System</strong></td>
