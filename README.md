@@ -318,5 +318,36 @@ The project uses the following packages:
 - **google.auth.exceptions** – Handles authentication-specific errors.  
 
 This structure makes the system **scalable**, **maintainable**, and **ready for future enhancements**, such as adding new inventory modules, automated reporting, or mobile integration. 
+<br>
 
 
+# Testing
+
+## Code Validation
+
+In order to test my programme (run.py), I used the recommended [Code Institute Python Validator](https://pep8ci.herokuapp.com/).
+
+<table border="1" cellspacing="0" cellpadding="5">
+  <thead>
+    <tr>
+      <th></th>
+      <th>File</th>
+      <th>Screenshot</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Before</td>
+      <td>run.py (original)</td>
+      <td><img src="./documentation/python-linter-testing-1.JPG" alt="Before screenshot" width="200"></td>
+      <td>Long lines, minor formatting issues</td>
+    </tr>
+    <tr>
+      <td>After</td>
+      <td>run.py (PEP8-compliant)</td>
+      <td><img src="./documentation/python-linter-testing-2.JPG" alt="After screenshot" width="200"></td>
+      <td>Lines shortened, whitespace corrected, PEP8-compliant</td>
+    </tr>
+  </tbody>
+</table>
