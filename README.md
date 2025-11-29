@@ -135,3 +135,113 @@ As a staff member of a school, I want the programme to handle errors gracefully,
 </tr>
 </tbody>
 </table>
+
+
+# Future Additions and Implementations
+<br>
+
+<h2>Future Enhancements</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Planned Feature</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Additional Inventory Modules</strong></td>
+      <td>Extend the system beyond Library and Supplies to include Personnel, Student Marks, School Buses/Transport, and other school-related inventories such as ICT equipment or lab materials.</td>
+    </tr>
+    <tr>
+      <td><strong>User Authentication & Role Management</strong></td>
+      <td>Implement login and session handling with role-based access (e.g., admin vs teacher). Restrict sensitive operations such as deletion or bulk updates to authorised roles only.</td>
+    </tr>
+    <tr>
+      <td><strong>Advanced Search & Filtering</strong></td>
+      <td>Add powerful search tools to filter by ID ranges, names, quantity levels, price ranges, or categories. Improve navigation with flexible user-defined filters.</td>
+    </tr>
+    <tr>
+      <td><strong>Low Stock Alerts</strong></td>
+      <td>Automatically detect when items fall below a threshold and notify users with warnings, prompts, or optional email notifications.</td>
+    </tr>
+    <tr>
+      <td><strong>Bulk Import & Export</strong></td>
+      <td>Enable batch operations such as adding or updating items via CSV or Excel import. Allow exporting entire inventories or selected categories for offline analysis.</td>
+    </tr>
+    <tr>
+      <td><strong>Transaction History & Audit Trail</strong></td>
+      <td>Track all Add/Update/Delete actions with timestamps, previous values, new values, and the user responsible. Useful for transparency and debugging.</td>
+    </tr>
+    <tr>
+      <td><strong>Reports & Document Export</strong></td>
+      <td>Generate structured reports (inventory summaries, low-stock reports, value insights) and export them to PDF or CSV for printing or record-keeping.</td>
+    </tr>
+    <tr>
+      <td><strong>Data Visualisation</strong></td>
+      <td>Include charts such as stock level graphs, category breakdowns, price trends, or usage statistics. Useful for admin-level decision-making.</td>
+    </tr>
+    <tr>
+      <td><strong>Multi-Location Inventory Support</strong></td>
+      <td>Track items across multiple stores, rooms, or school buildings. Allow switching between locations or aggregating totals across the campus.</td>
+    </tr>
+    <tr>
+      <td><strong>Price History & Cost Tracking</strong></td>
+      <td>Record changes to item cost over time and generate analytics for budgeting, forecasting, and financial reporting.</td>
+    </tr>
+    <tr>
+      <td><strong>Mobile or Tablet Integration</strong></td>
+      <td>Create a mobile-friendly app or web interface to allow on-the-go inventory updates, barcode scanning, or quick checks while moving around the school.</td>
+    </tr>
+    <tr>
+      <td><strong>Automation & System Integration</strong></td>
+      <td>Add scheduled backups, cloud sync, or integration with Google Workspace. Potential for barcode/QR scanning and API-based communication with other school systems.</td>
+    </tr>
+  </tbody>
+</table>
+
+
+# Technologies behind the 'School Inventory' programme:
+<br>
+
+<h2>Tools & Technologies</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tool / Technology</th>
+      <th>Use</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Git</td>
+      <td>Version control for tracking changes in code (git add, commit, push).</td>
+    </tr>
+    <tr>
+      <td>GitHub</td>
+      <td>Secure online repository for code storage, collaboration, and version tracking.</td>
+    </tr>
+    <tr>
+      <td>Visual Studio Code</td>
+      <td>Local development environment for writing, debugging, and running code.</td>
+    </tr>
+    <tr>
+      <td>Python</td>
+      <td>Main programming language used for the inventory system.</td>
+    </tr>
+    <tr>
+      <td>Heroku</td>
+      <td>Hosting and deployment of the back-end site to make the application accessible online.</td>
+    </tr>
+    <tr>
+      <td>ChatGPT</td>
+      <td>Assistance with coding, debugging, explanations, and improving code logic.</td>
+    </tr>
+    <tr>
+      <td>Google Sheets</td>
+      <td>Data storage and synchronization for the inventory database.</td>
+    </tr>
+  </tbody>
+</table>
