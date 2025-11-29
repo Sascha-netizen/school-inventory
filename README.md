@@ -1,4 +1,4 @@
-# school inventory (Link will follow)
+# [School Inventory](https://school-inventory-app-8bb2e4ff773b.herokuapp.com/)
 
 Student: Sascha Klement
 
