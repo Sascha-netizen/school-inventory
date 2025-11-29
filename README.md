@@ -245,3 +245,78 @@ As a staff member of a school, I want the programme to handle errors gracefully,
     </tr>
   </tbody>
 </table>
+
+
+# Programme Design
+
+## Data Model
+### Classes & Functions
+
+The School Inventory System is built using an object-oriented and modular design to keep the code maintainable and extendable. The main structure revolves around the `InventorySystem` class, which manages access to two subsystems: **Library** and **Supplies**.  
+
+Data persistence is handled via **Google Sheets**, with each subsystem stored in a separate worksheet.
+
+---
+
+### InventorySystem Class
+
+The `InventorySystem` class encapsulates all core functionality, including:
+
+- Selecting which inventory to manage (Library or Supplies).  
+- Adding, updating, searching, displaying, and deleting records.  
+- ID generation with gap-filling and validation.  
+- Error handling for Google Sheets API and authentication issues.  
+
+#### Key Attributes:
+
+- `sheet`: The Google Sheets object connected to the `school_inventory_system` workbook.
+
+#### Core Methods:
+
+- **choose_inventory()** – Displays the main inventory menu and lets the user choose between Library or Supplies.  
+- **_search_record(worksheet, headers)** – Generic search function for both Library and Supplies; supports column-based keyword searches and displays results in a formatted table.  
+- **_generate_suggested_id(prefix, worksheet)** – Suggests the next available ID, filling gaps in the sequence automatically.  
+- **_ask_for_id_with_suggestion(prefix, worksheet)** – Displays suggested ID, validates user input, and prevents duplicates.  
+
+#### Library Methods:
+
+- **option_one_library()** – Displays the Library menu and handles task selection: add, update, search/display, delete, or exit.  
+- **add_book()** – Prompts for book details (ID, title, author, quantity, category, notes) and appends to Google Sheets.  
+- **update_book()** – Allows updating an existing book by ID; validates quantity and preserves unchanged fields.  
+- **search_book()** – Uses `_search_record` to search or display Library records.  
+- **delete_book()** – Deletes a book from the Library worksheet after confirmation.  
+
+#### Supplies Methods:
+
+- **option_two_supplies()** – Displays the Supplies menu and handles task selection.  
+- **add_item()** – Prompts for item details (ID, product, brand, quantity, category, notes) and appends to Google Sheets.  
+- **update_item()** – Allows updating an existing item by ID; validates quantity and preserves unchanged fields.  
+- **search_item()** – Uses `_search_record` to search or display Supplies records.  
+- **delete_item()** – Deletes an item from the Supplies worksheet after confirmation.  
+
+---
+
+### Error Handling
+
+All Google Sheets operations are wrapped in `safe_api_call(func, *args, **kwargs)` to gracefully handle:
+
+- API exceptions (`gspread.exceptions.GSpreadException`)  
+- Authentication errors (`GoogleAuthError`)  
+- Any other unexpected runtime errors  
+
+Errors are displayed with colored terminal messages using **colorama** for clarity.
+
+---
+
+### Imports / Dependencies
+
+The project uses the following packages:
+
+- **gspread** – Connects and interacts with Google Sheets.  
+- **google.oauth2.service_account** – Authenticates via service account.  
+- **colorama** – Adds colored terminal output.  
+- **google.auth.exceptions** – Handles authentication-specific errors.  
+
+This structure makes the system **scalable**, **maintainable**, and **ready for future enhancements**, such as adding new inventory modules, automated reporting, or mobile integration. 
+
+

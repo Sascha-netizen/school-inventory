@@ -292,6 +292,7 @@ class InventorySystem:
             print(Fore.MAGENTA + f"Book {book_id} deleted successfully.")
         else:
             print(Fore.MAGENTA + "Delete operation cancelled.")
+            
 
     # -------------------- Supplies Methods --------------------
     def option_two_supplies(self):
