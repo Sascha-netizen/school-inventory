@@ -59,7 +59,7 @@ class InventorySystem:
         print()
 
         while True:
-            choice = input(Fore.GREEN + "\nEnter 1 or 2: ").strip()
+            choice = input(Fore.GREEN + "\nEnter 1 or 2: \n").strip()
             if choice == "1":
                 return "Library"
             elif choice == "2":
@@ -92,7 +92,7 @@ class InventorySystem:
             while True:
                 choice = input(
                     Fore.GREEN +
-                    f"Choose an option [1-{len(headers)+1}]: "
+                    f"Choose an option [1-{len(headers)+1}]: \n"
                 ).strip()
                 if choice.isdigit() and 1 <= int(choice) <= len(headers)+1:
                     choice = int(choice)
@@ -106,7 +106,7 @@ class InventorySystem:
                 col_index = choice - 1
                 keyword = input(
                     Fore.GREEN +
-                    f"Enter keyword for {headers[col_index]}: "
+                    f"Enter keyword for {headers[col_index]}: \n"
                 ).strip().lower()
                 results = [
                     row for row in data_rows
@@ -144,7 +144,7 @@ class InventorySystem:
 
         while True:
             choice = input(
-                Fore.GREEN + "Enter a number of your choice [1-5]: "
+                Fore.GREEN + "Enter a number of your choice [1-5]: \n"
             ).strip()
             if choice == "1":
                 self.add_book()
@@ -201,7 +201,7 @@ class InventorySystem:
             print(Fore.YELLOW + f"Suggested ID: {suggestion}")
             user_input = input(
                 Fore.GREEN +
-                "Press Enter to accept or type a custom ID (q to cancel): "
+                "Press Enter to accept or type a custom ID (q to cancel): \n"
             ).strip()
 
             if user_input == "":
@@ -237,11 +237,11 @@ class InventorySystem:
         if book_id is None:
             return
 
-        title = input(Fore.GREEN + "Enter title: ").strip()
-        author = input(Fore.GREEN + "Enter author: ").strip()
+        title = input(Fore.GREEN + "Enter title: \n").strip()
+        author = input(Fore.GREEN + "Enter author: \n").strip()
 
         while True:
-            quantity_input = input(Fore.GREEN + "Enter Quantity: ").strip()
+            quantity_input = input(Fore.GREEN + "Enter Quantity: \n").strip()
             try:
                 quantity = int(quantity_input)
                 if quantity < 0:
@@ -257,8 +257,8 @@ class InventorySystem:
                     "Invalid input. Please enter a numeric value."
                 )
 
-        category = input(Fore.GREEN + "Enter category: ").strip()
-        notes = input(Fore.GREEN + "Enter notes: ").strip()
+        category = input(Fore.GREEN + "Enter category: \n").strip()
+        notes = input(Fore.GREEN + "Enter notes: \n").strip()
 
         safe_api_call(
             worksheet_library.append_row,
@@ -274,7 +274,7 @@ class InventorySystem:
         print(Fore.CYAN + "\n=== Update an existing book ===\n")
         book_id = input(
             Fore.GREEN +
-            "Enter the Book ID to update (e.g., LIB-0001): "
+            "Enter the Book ID to update (e.g., LIB-0001): \n"
         ).strip()
 
         cell = safe_api_call(worksheet_library.find, book_id)
@@ -303,7 +303,7 @@ class InventorySystem:
 
             current = row_values[i] if i < len(row_values) else ""
             new_value = input(
-                Fore.GREEN + f"{field} [{current}]: "
+                Fore.GREEN + f"{field} [{current}]: \n"
             ).strip()
 
             if new_value == "":
@@ -321,7 +321,7 @@ class InventorySystem:
                             new_value = input(
                                 Fore.RED +
                                 "Quantity must be a non-negative integer. "
-                                "Try again: "
+                                "Try again: \n"
                             ).strip()
                 else:
                     updated_values.append(new_value)
@@ -350,7 +350,7 @@ class InventorySystem:
 
         book_id = input(
             Fore.GREEN +
-            "Enter the book ID to delete (e.g., LIB-0001, q to cancel): "
+            "Enter the book ID to delete (e.g., LIB-0001, q to cancel): \n"
         ).strip()
         if book_id.lower() in ("q", "quit", "cancel"):
             print(Fore.MAGENTA + "Delete operation cancelled.")
@@ -363,7 +363,7 @@ class InventorySystem:
 
         confirm = input(
             Fore.YELLOW +
-            f"Are you sure you want to delete book {book_id}? (y/n): "
+            f"Are you sure you want to delete book {book_id}? (y/n): \n"
         ).strip().lower()
         if confirm == "y":
             safe_api_call(worksheet_library.delete_rows, cell.row)
@@ -385,7 +385,7 @@ class InventorySystem:
 
         while True:
             choice = input(
-                Fore.GREEN + "Enter a number of your choice [1-5]: "
+                Fore.GREEN + "Enter a number of your choice [1-5]: \n"
             ).strip()
             if choice == "1":
                 self.add_item()
@@ -416,11 +416,11 @@ class InventorySystem:
         if product_id is None:
             return
 
-        product = input(Fore.GREEN + "Enter product: ").strip()
-        brand = input(Fore.GREEN + "Enter brand: ").strip()
+        product = input(Fore.GREEN + "Enter product: \n").strip()
+        brand = input(Fore.GREEN + "Enter brand: \n").strip()
 
         while True:
-            quantity_input = input(Fore.GREEN + "Enter Quantity: ").strip()
+            quantity_input = input(Fore.GREEN + "Enter Quantity: \n").strip()
             try:
                 quantity = int(quantity_input)
                 if quantity < 0:
@@ -436,8 +436,8 @@ class InventorySystem:
                     "Invalid input. Please enter a numeric value."
                 )
 
-        category = input(Fore.GREEN + "Enter category: ").strip()
-        notes = input(Fore.GREEN + "Enter notes: ").strip()
+        category = input(Fore.GREEN + "Enter category: \n").strip()
+        notes = input(Fore.GREEN + "Enter notes: \n").strip()
 
         safe_api_call(
             worksheet_supplies.append_row,
@@ -453,7 +453,7 @@ class InventorySystem:
         print(Fore.CYAN + "\n=== Update an existing item ===\n")
         product_id = input(
             Fore.GREEN +
-            "Enter the Item ID to update (e.g., SUP-0001): "
+            "Enter the Item ID to update (e.g., SUP-0001): \n"
         ).strip()
 
         cell = safe_api_call(worksheet_supplies.find, product_id)
@@ -482,7 +482,7 @@ class InventorySystem:
 
             current = row_values[i] if i < len(row_values) else ""
             new_value = input(
-                Fore.GREEN + f"{field} [{current}]: "
+                Fore.GREEN + f"{field} [{current}]: \n"
             ).strip()
 
             if new_value == "":
@@ -500,7 +500,7 @@ class InventorySystem:
                             new_value = input(
                                 Fore.RED +
                                 "Quantity must be a non-negative integer. "
-                                "Try again: "
+                                "Try again: \n"
                             ).strip()
                 else:
                     updated_values.append(new_value)
@@ -529,7 +529,7 @@ class InventorySystem:
 
         item_id = input(
             Fore.GREEN +
-            "Enter the Item ID to delete (e.g., SUP-0001, q to cancel): "
+            "Enter the Item ID to delete (e.g., SUP-0001, q to cancel): \n"
         ).strip()
         if item_id.lower() in ("q", "quit", "cancel"):
             print(Fore.MAGENTA + "Delete operation cancelled.")
@@ -542,7 +542,7 @@ class InventorySystem:
 
         confirm = input(
             Fore.YELLOW +
-            f"Are you sure you want to delete item {item_id}? (y/n): "
+            f"Are you sure you want to delete item {item_id}? (y/n): \n"
         ).strip().lower()
         if confirm == "y":
             safe_api_call(worksheet_supplies.delete_rows, cell.row)
