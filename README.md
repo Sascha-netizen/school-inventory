@@ -351,3 +351,59 @@ In order to test my programme (run.py), I used the recommended [Code Institute P
     </tr>
   </tbody>
 </table>
+<br>
+
+
+# Bugs
+
+As I built the project step by step, I tried to eliminate potential bugs on the go. Luckily, my code never broke or crashed, but I instinctively felt this was down to luck rather than design. It was a bit like writing a book chapter based on anecdotal evidence—fine for a first draft, but not for publication (as a published author, I have been through this process myself). This is why I decided to implement the `safe_api_call()` function for error handling and ensured it was called whenever the program fetched from or pushed data to Google Sheets. This approach helps prevent crashes and provides clear feedback to the user in case of unexpected issues.
+
+## Potential Bugs / Issues
+
+During testing, no bugs were observed. The program was thoroughly tested using:
+
+- All menu options (Library and Supplies)
+- Adding, updating, deleting, and searching records
+- Edge cases (e.g., negative numbers, empty input, invalid IDs)
+- Google Sheets integration for persistent data
+
+Potential issues that were considered and mitigated include:
+
+- Duplicate item IDs and names
+- Invalid numeric input (negative quantity or non-integer values)
+- Failed Google Sheets API calls (handled with clear error messages)
+- User-cancelled operations (handled gracefully)
+
+## Test Results
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Test Scenario</th>
+      <th>Expected Result</th>
+      <th>Actual Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Add new library book</td>
+      <td>Book added and visible in sheet</td>
+      <td>Success</td>
+    </tr>
+    <tr>
+      <td>Update existing supplies item</td>
+      <td>Item updated in sheet</td>
+      <td>Success</td>
+    </tr>
+    <tr>
+      <td>Search for non-existent item</td>
+      <td>Shows "No matching records found"</td>
+      <td>Success</td>
+    </tr>
+    <tr>
+      <td>Enter negative quantity</td>
+      <td>Program prevents entry and prompts again</td>
+      <td>Success</td>
+    </tr>
+  </tbody>
+</table>
