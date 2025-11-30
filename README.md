@@ -484,3 +484,216 @@ python-3.12.2
 ```
 
 Your application is now live on Heroku!
+<br>
+
+
+# Using Google Sheets API
+
+The school inventory programme is connected to [Google Sheets](https://docs.google.com/spreadsheets/u/0/) as API that interacts with the live site as the programme is running.
+
+Inside the Google Sheets application, I created two individual worksheets: one for [library](https://docs.google.com/spreadsheets/d/1X3YMXEJ-CR6H13ka9u6i6RNJ1IhQo3h1pWoyFYBuQ8c/edit?gid=304689550#gid=304689550) data and the other one for [supplies](https://docs.google.com/spreadsheets/d/1X3YMXEJ-CR6H13ka9u6i6RNJ1IhQo3h1pWoyFYBuQ8c/edit?gid=0#gid=0).
+<br>
+
+The library worksheet looks as follows:
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Quantity</th>
+      <th>Category</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+    </tr>
+    <tr>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+    </tr>
+    <tr>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+
+
+The supplies worksheet uses slightly different, product-specific headings: 
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Product</th>
+      <th>Brand</th>
+      <th>Quantity</th>
+      <th>Category</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+    </tr>
+    <tr>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+    </tr>
+    <tr>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+    </tr>
+    <tr>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+      <td>sample data</td>
+    </tr>
+  </tbody>
+</table>
+
+## Google API Credentials
+
+To use Google Sheets and Google Drive with this application, a credentials file in *JSON format from Google Cloud Platform is required.
+
+### Steps to Set Up
+
+1. **Create a New Project**
+   - Go to the [Google Cloud Platform Dashboard](https://console.cloud.google.com/).
+   - Click **Select a project**, then **NEW PROJECT**.
+   - Enter a project name and click **CREATE**.
+   - Click **SELECT PROJECT** to open your new project.
+
+2. **Enable APIs**
+   - Navigate to **APIs & Services → Library**.
+   - Search for **Google Drive API** and click **ENABLE**.
+   - Repeat the process for **Google Sheets API**.
+
+3. **Create a Service Account**
+   - Click **CREATE CREDENTIALS → Service Account**.
+   - Enter a service account name and click **CREATE**.
+   - Set **Role** to **Basic → Editor**, then click **Continue**.
+   - Skip “Grant users access” and click **DONE**.
+
+4. **Generate JSON Key**
+   - On the service account page, go to the **Keys** tab.
+   - Click **Add Key → Create New Key**, select **JSON**, and click **Create**.
+   - Rename the downloaded file to `creds.json` for local deployment.
+
+5. **Grant Access to Your Google Sheet**
+   - Open your Google Sheet.
+   - Copy the `client_email` from `creds.json`.
+   - Share the Sheet with this email and give **Editor** permissions.
+
+6. **Security Reminder**
+   - Add `creds.json` to your `.gitignore` file to avoid exposing your credentials publicly.
+
+
+## Local Development
+
+You can create a local copy of this project by either **cloning** or **forking** the repository.  
+
+Before running the project locally, ensure that all required Python packages are installed:
+
+```bash
+pip3 install -r requirements.txt
+```
+
+## Cloning a Repository
+## How to Clone a Repository
+
+1. On GitHub, navigate to the repository for this project: [School Inventory Repository](https://github.com/Sascha-netizen/school-inventory).  
+2. Click the green **Code** button at the top of the repository, above the commits and files.  
+3. Copy the repository URL using your preferred method:  
+   - **HTTPS:** Click **HTTPS** and copy the URL.  
+   - **SSH:** Click **SSH** (requires an SSH key) and copy the URL.  
+   - **GitHub CLI:** Click **GitHub CLI** and copy the URL.  
+4. Open your terminal or IDE terminal.  
+5. Navigate to the directory where you want to store the ![cloned repository](documentation/cloning-repository.JPG).  
+6. Run the following command to clone the repository:
+
+```bash
+git clone https://github.com/Sascha-netizen/school-inventory.git
+```
+
+7. Press Enter to create your local clone.
+<br>
+
+# Forking the Repository
+## Forking the Repository
+
+Forking a GitHub repository creates a personal copy of the original repository under your GitHub account. This allows you to make changes or experiment without affecting the original project.
+
+To fork this repository:
+
+1. Log in to GitHub and navigate to the [School Inventory Repository](https://github.com/Sascha-netizen/school-inventory).  
+2. At the top of the repository page, just below the **Settings** button, click the **Fork** ![button](documentation/cloning-repository.JPG).  
+3. If prompted, select your GitHub account from the dropdown menu to own the forked repository.  
+4. Click **Create fork** to complete the process.  
+
+You now have a personal copy of the repository on your GitHub account that you can freely modify.
+<br>
+
+
+# Credits and Acknowledgements
+
+I used the following resources when bulding this project:
+
+1. The Code Institute ['Love Sandwiches'](https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+LS101+5/courseware/293ee9d8ff3542d3b877137ed81b9a5b/58d3e90f9a2043908c62f31e51c15deb/) code-along project.
+<br>
+2. Colorama for adding colour-coded feedback in the terminal.
+<br>
+3. Chatgpt for explanations and guidance.
+<br>
+
+The following people have kindly supported me during my work on this project:
+
+1. My Code Institute Mentor, [Patrick Rory Sheridan](https://github.com/Ri-Dearg): for his patience and kindness.
+2. My wife Abeer ElAshry, who encouraged me to maintain the five daily prayers during this project.
+3. Ahmed Abouraia at Misr American College: thank you for trying to make me understand the initial stages of data analytics.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
