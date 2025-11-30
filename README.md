@@ -407,3 +407,80 @@ Potential issues that were considered and mitigated include:
     </tr>
   </tbody>
 </table>
+<br>
+
+
+# Deployment
+
+This project uses the [template](https://github.com/Code-Institute-Org/python-essentials-template) provided by Code Institute for Portfolio Project 3. It provides the basic components required for a CLI application to run properly in the mock-terminal. The school-inventory system is deployed and live on [Heroku](https://school-inventory-app-8bb2e4ff773b.herokuapp.com/).
+
+## Heroku Deployment
+
+This project is deployed on [Heroku](https://www.heroku.com/), a Platform-as-a-Service (PaaS) that allows developers to build, run, and manage applications entirely in the cloud.
+
+### Prerequisites
+
+Heroku requires the following files to build and run your application:
+
+- [`requirements.txt`](https://github.com/Sascha-netizen/school-inventory/blob/main/requirements.txt) - Lists all Python dependencies
+- [`Procfile`](https://github.com/Sascha-netizen/school-inventory/blob/main/Procfile) - Defines the command to launch your application
+- [`runtime.txt`](https://github.com/Sascha-netizen/school-inventory/blob/main/runtime.txt) - Specifies the Python version
+
+### Creating Required Files
+
+**Generate the requirements file:**
+```bash
+pip3 freeze --local > requirements.txt
+```
+
+**Create the Procfile:**
+```bash
+echo web: node index.js > Procfile
+```
+
+**Specify Python version in `runtime.txt`:**
+```
+python-3.12.2
+```
+
+### Deployment Steps
+
+1. **Create a new Heroku app**
+   - In your Heroku Dashboard, click **New** (top right) and select **Create new app**
+   - Choose a unique app name and select your region (EU or USA)
+   - Click **Create App**
+
+2. **Configure environment variables**
+   - Open the **Settings** tab and click **Reveal Config Vars**
+   - Add `PORT` with the value `8000`
+   - If your project uses sensitive credentials (e.g., `creds.json`), add them as additional config variables
+
+3. **Add buildpacks**
+   - Scroll to the **Buildpacks** section and click **Add buildpack**
+   - Add in this exact order:
+     1. Python
+     2. Node.js
+   - (Drag to rearrange if needed)
+
+4. **Deploy your application**
+
+   **Option 1 (Recommended): Automatic Deployments**
+   - Go to the **Deploy** tab
+   - Connect your GitHub repository
+   - Enable **Automatic Deploys** for seamless updates
+
+   **Option 2: Manual Deployment via Terminal**
+   - Authenticate with Heroku:
+```bash
+     heroku login -i
+```
+   - Link your repository (replace `app_name` with your app's name):
+```bash
+     heroku git:remote -a app_name
+```
+   - Push to Heroku:
+```bash
+     git push heroku main
+```
+
+Your application is now live on Heroku!
